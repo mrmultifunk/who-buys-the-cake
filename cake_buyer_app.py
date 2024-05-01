@@ -19,6 +19,7 @@ class CakeRotationApp:
         self.current_date = datetime.datetime.now()
         self.last_date = None  # Store the last date of assignment
         self.absentees = []  # List to store absentees
+        self.can_pay = False    # Flag to enable "Paid" button only when buyer changes
 
         self.setup_ui()
         self.load_history()
@@ -34,8 +35,8 @@ class CakeRotationApp:
         self.next_buyer_label = ttk.Label(self.frame, text="", font=self.custom_font, foreground='blue')
         self.next_buyer_label.grid(column=1, row=2, pady=10)
 
-        self.absent_button = ttk.Button(self.frame, text="Mark Absent", command=self.mark_absent)
-        self.absent_button.grid(column=1, row=3, pady=10)
+        self.paid_button = ttk.Button(self.frame, text="Paid", command=self.record_purchase)
+        self.paid_button.grid(column=1, row=3, pady=10)
 
         self.buttons_frame = ttk.Frame(self.frame)
         self.buttons_frame.grid(column=1, row=4, pady=20)
@@ -84,12 +85,16 @@ class CakeRotationApp:
         while self.names[self.index] in self.absentees:
             self.index = (self.index + 1) % len(self.names)
         self.next_buyer_label.config(text=f"{self.names[self.index]}")
-        self.record_purchase(self.names[self.index])  # Automatically record the purchase
 
-    def mark_absent(self):
-        self.absentees.append(self.names[self.index])
+    def record_purchase(self):
+        buyer = self.names[self.index]
+        today = datetime.datetime.now()
+        formatted_date = today.strftime('%d-%m-%Y')
+        entry = f"{formatted_date}: {buyer} paid 60 DKK"  # Default amount
+        self.history.append(entry)
+        self.save_history()
+        self.update_history_text()
         self.index = (self.index + 1) % len(self.names)
-        self.display_next_buyer()
 
     def reset_statistics(self):
         if messagebox.askyesno("Reset Statistics", "Are you sure you want to reset all statistics? This cannot be undone."):
@@ -102,15 +107,6 @@ class CakeRotationApp:
                 os.remove(self.history_file)
             messagebox.showinfo("Reset Complete", "All statistics have been reset.")
             self.display_next_buyer()
-
-    def record_purchase(self, buyer):
-        today = datetime.datetime.now()
-        formatted_date = today.strftime('%d-%m-%Y')
-        entry = f"{formatted_date}: {buyer} paid 60 DKK"  # Default amount, could be configurable
-        self.history.append(entry)
-        self.save_history()
-        self.update_history_text()
-        self.index = (self.index + 1) % len(self.names)
 
     def show_future_buyers(self):
         future_dates = [datetime.datetime.now() + datetime.timedelta(weeks=i) for i in range(1, 5)]
