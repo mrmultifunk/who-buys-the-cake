@@ -1,123 +1,147 @@
 import tkinter as tk
-from tkinter import messagebox, scrolledtext, simpledialog, filedialog, ttk
-import tkinter.font as tkFont
+from tkinter import messagebox, simpledialog, ttk
 import datetime
+import json
 import os
+import shutil
 
 class CakeRotationApp:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Cake Rotation Scheduler")
-        self.root.geometry('400x500')  # Set a fixed size for the window
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Cake Payment Manager")
+        self.master.geometry('600x750')
 
-        self.custom_font = tkFont.Font(family="Helvetica", size=12)  # Custom font for widgets
-
-        self.names = ["Brian", "Ulrik", "Dorthe", "Ian", "Eik", "Jesper", "Martin", "Frank"]
-        self.index = 0
+        self.members = {}
         self.history = []
-        self.history_file = 'cake_history.txt'
-        self.current_date = datetime.datetime.now()
-        self.last_date = None  # Store the last date of assignment
-        self.absentees = []  # List to store absentees
-        self.can_pay = False    # Flag to enable "Paid" button only when buyer changes
-
+        self.current_date = datetime.date.today()
+        self.data_file = "team_data.json"
+        self.current_payer_index = 0  # Track the current payer index
+        
+        if not os.path.exists(self.data_file):
+            self.save_data()
+        self.load_data()
         self.setup_ui()
-        self.load_history()
-        self.display_next_buyer()
+        self.select_next_payer()  # Initial selection of the next payer
 
     def setup_ui(self):
-        self.frame = ttk.Frame(self.root, padding="10 10 10 10")
-        self.frame.pack(fill=tk.BOTH, expand=True)
+        self.frame = ttk.Frame(self.master)
+        self.frame.grid(row=0, column=0, padx=10, pady=10)
 
-        self.info_label = ttk.Label(self.frame, text="To pay the cake this week:", font=self.custom_font)
-        self.info_label.grid(column=1, row=1, pady=10)
+        ttk.Label(self.frame, text="Cake Payment Manager", font=('Helvetica', 16)).grid(row=0, columnspan=3)
 
-        self.next_buyer_label = ttk.Label(self.frame, text="", font=self.custom_font, foreground='blue')
-        self.next_buyer_label.grid(column=1, row=2, pady=10)
+        self.member_listbox = tk.Listbox(self.frame, height=10, width=50)
+        self.member_listbox.grid(row=1, column=0, columnspan=2, pady=5)
+        self.update_member_listbox()
 
-        self.paid_button = ttk.Button(self.frame, text="Paid", command=self.record_purchase)
-        self.paid_button.grid(column=1, row=3, pady=10)
+        self.add_edit_button = ttk.Button(self.frame, text="Add/Edit Member", command=self.add_or_edit_member)
+        self.add_edit_button.grid(row=2, column=0, pady=5)
 
-        self.buttons_frame = ttk.Frame(self.frame)
-        self.buttons_frame.grid(column=1, row=4, pady=20)
+        self.absent_button = ttk.Button(self.frame, text="Toggle Absence", command=self.toggle_absence)
+        self.absent_button.grid(row=2, column=1, pady=5)
 
-        self.future_button = ttk.Button(self.buttons_frame, text="Show Next 4 Weeks", command=self.show_future_buyers)
-        self.future_button.grid(column=1, row=1, padx=10)
+        self.reset_button = ttk.Button(self.frame, text="Reset Statistics", command=self.reset_statistics)
+        self.reset_button.grid(row=3, column=0, columnspan=2, pady=5)
 
-        self.reset_button = ttk.Button(self.buttons_frame, text="Reset Statistics", command=self.reset_statistics)
-        self.reset_button.grid(column=2, row=1, padx=10)
+        self.pay_button = ttk.Button(self.frame, text="Record Payment", command=self.record_payment)
+        self.pay_button.grid(row=4, column=0, columnspan=2, pady=5)
 
-        self.export_button = ttk.Button(self.buttons_frame, text="Export History", command=self.export_history)
-        self.export_button.grid(column=3, row=1, padx=10)
+        self.stats_tree = ttk.Treeview(self.frame, columns=('Member', 'Paid', 'Times'), show='headings', height=10)
+        self.stats_tree.grid(row=5, column=0, columnspan=3, pady=10)
+        self.stats_tree.heading('Member', text='Member')
+        self.stats_tree.heading('Paid', text='Total Paid')
+        self.stats_tree.heading('Times', text='Times Paid')
+        self.stats_tree.column('Member', width=120)
+        self.stats_tree.column('Paid', width=100)
+        self.stats_tree.column('Times', width=100)
+        self.update_stats_tree()
 
-        self.history_label = ttk.Label(self.frame, text="Purchase History:", font=self.custom_font)
-        self.history_label.grid(column=1, row=5, pady=10)
+    def load_data(self):
+        if os.path.exists(self.data_file):
+            with open(self.data_file, 'r') as file:
+                data = json.load(file)
+                self.members = data.get('members', {})
+                self.history = data.get('history', {})
+                self.current_payer_index = data.get('current_payer_index', 0)
 
-        self.history_text = scrolledtext.ScrolledText(self.frame, width=40, height=10, font=self.custom_font)
-        self.history_text.grid(column=1, row=6, pady=10)
+    def save_data(self):
+        data = {
+            'members': self.members,
+            'history': self.history,
+            'current_payer_index': self.current_payer_index
+        }
+        with open(self.data_file, 'w') as file:
+            json.dump(data, file)
 
-    def load_history(self):
-        if os.path.exists(self.history_file):
-            with open(self.history_file, 'r') as file:
-                lines = file.readlines()
-                self.history = [line.strip() for line in lines]
-                if self.history:
-                    last_entry = self.history[-1]
-                    self.last_date = datetime.datetime.strptime(last_entry.split(":")[0], '%d-%m-%Y')
-        self.update_history_text()
+    def update_member_listbox(self):
+        self.member_listbox.delete(0, tk.END)
+        for i, (member, details) in enumerate(self.members.items()):
+            status = "Absent" if details.get('is_absent', False) else "Present"
+            entry = f"{member} - {status}"
+            self.member_listbox.insert(tk.END, entry)
+            if i == self.current_payer_index:
+                self.member_listbox.itemconfig(i, {'bg': 'lightgreen'})  # Highlight the current payer
 
-    def save_history(self):
-        with open(self.history_file, 'w') as file:
-            for entry in self.history:
-                file.write(f"{entry}\n")
+    def add_or_edit_member(self):
+        name = simpledialog.askstring("Member Name", "Enter the member's name:")
+        if name:
+            if name not in self.members:
+                self.members[name] = {'total_paid': 0, 'times_paid': 0, 'is_absent': False}
+            self.save_data()
+            self.update_member_listbox()
+            self.update_stats_tree()
 
-    def export_history(self):
-        export_file = filedialog.asksaveasfilename(defaultextension=".txt",
-                                                   filetypes=[("Text files", "*.txt"), ("All files", "*.*")],
-                                                   title="Save history as...")
-        if export_file:
-            with open(export_file, 'w') as file:
-                for entry in self.history:
-                    file.write(f"{entry}\n")
-            messagebox.showinfo("Export Successful", f"History has been exported to {export_file}.")
-
-    def display_next_buyer(self):
-        while self.names[self.index] in self.absentees:
-            self.index = (self.index + 1) % len(self.names)
-        self.next_buyer_label.config(text=f"{self.names[self.index]}")
-
-    def record_purchase(self):
-        buyer = self.names[self.index]
-        today = datetime.datetime.now()
-        formatted_date = today.strftime('%d-%m-%Y')
-        entry = f"{formatted_date}: {buyer} paid 60 DKK"  # Default amount
-        self.history.append(entry)
-        self.save_history()
-        self.update_history_text()
-        self.index = (self.index + 1) % len(self.names)
+    def toggle_absence(self):
+        selected = self.member_listbox.curselection()
+        if selected:
+            member = list(self.members.keys())[selected[0]]
+            self.members[member]['is_absent'] = not self.members[member].get('is_absent', False)
+            self.save_data()
+            self.update_member_listbox()
 
     def reset_statistics(self):
-        if messagebox.askyesno("Reset Statistics", "Are you sure you want to reset all statistics? This cannot be undone."):
-            self.history = []
-            self.index = 0
-            self.absentees = []
-            self.last_date = None
-            self.update_history_text()
-            if os.path.exists(self.history_file):
-                os.remove(self.history_file)
-            messagebox.showinfo("Reset Complete", "All statistics have been reset.")
-            self.display_next_buyer()
+        if messagebox.askyesno("Reset Statistics", "Are you sure you want to reset all statistics?"):
+            backup_file = self.data_file.replace('.json', '_backup.json')
+            shutil.copy(self.data_file, backup_file)
+            for member in self.members:
+                self.members[member]['total_paid'] = 0
+                self.members[member]['times_paid'] = 0
+            self.history.clear()
+            self.save_data()
+            self.update_stats_tree()
+            messagebox.showinfo("Reset Complete", "All statistics have been reset. Backup saved as " + backup_file)
 
-    def show_future_buyers(self):
-        future_dates = [datetime.datetime.now() + datetime.timedelta(weeks=i) for i in range(1, 5)]
-        future_buyers = [(self.names[(self.index + i) % len(self.names)], date.strftime('%d-%m-%Y')) for i, date in enumerate(future_dates)]
-        future_text = "\n".join(f"{date}: {buyer}" for buyer, date in future_buyers)
-        messagebox.showinfo("Next 4 Weeks' Buyers", future_text)
+    def record_payment(self):
+        if self.members:
+            member = list(self.members.keys())[self.current_payer_index]
+            if not self.members[member]['is_absent']:
+                amount = simpledialog.askinteger("Payment Amount", "Enter the amount paid:", initialvalue=60)
+                if amount:
+                    self.members[member]['total_paid'] += amount
+                    self.members[member]['times_paid'] += 1
+                    self.history.append({'date': str(self.current_date), 'member': member, 'amount': amount})
+                    self.save_data()
+                    self.update_stats_tree()
+                    messagebox.showinfo("Payment Recorded", f"{member} has paid {amount} DKK.")
+                    self.select_next_payer()  # Automatically select the next payer
 
-    def update_history_text(self):
-        self.history_text.delete(1.0, tk.END)
-        for entry in self.history:
-            self.history_text.insert(tk.END, entry + '\n')
+    def select_next_payer(self):
+        # Move to the next member who is not absent
+        initial_index = self.current_payer_index
+        while True:
+            self.current_payer_index = (self.current_payer_index + 1) % len(self.members)
+            member = list(self.members.keys())[self.current_payer_index]
+            if not self.members[member]['is_absent'] or self.current_payer_index == initial_index:
+                break
+        self.member_listbox.select_clear(0, tk.END)
+        self.member_listbox.select_set(self.current_payer_index)
+        self.member_listbox.activate(self.current_payer_index)
+        self.update_member_listbox()
+
+    def update_stats_tree(self):
+        for i in self.stats_tree.get_children():
+            self.stats_tree.delete(i)
+        for member, details in self.members.items():
+            self.stats_tree.insert('', 'end', values=(member, details['total_paid'], details['times_paid']))
 
 root = tk.Tk()
 app = CakeRotationApp(root)
