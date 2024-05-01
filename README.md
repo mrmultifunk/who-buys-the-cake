@@ -37,7 +37,7 @@ source venv/bin/activate
 ```
 
 ##### 4. Install dependencies
-If the application requires any external libraries, install them using pip while the virtual environment is activated. Currently, the Cake Buyer App only requires Tkinter, which is included with Python.
+Currently, the Cake Buyer App only requires Tkinter, which is included with Python.
 
 #### Running the Application
 With the virtual environment activated and dependencies installed, you can run the application:
