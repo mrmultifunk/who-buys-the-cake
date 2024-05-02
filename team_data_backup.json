@@ -1,1 +1,62 @@
-{"members": {"Brian": {"total_paid": 60, "times_paid": 1, "is_absent": true, "last_payment_date": "02-05-2024", "absence_count": 1}, "Ulrik": {"total_paid": 60, "times_paid": 1, "is_absent": true, "last_payment_date": "02-05-2024", "absence_count": 1}, "Dorthe": {"total_paid": 60, "times_paid": 1, "is_absent": false, "last_payment_date": "02-05-2024", "absence_count": 0}, "Eik": {"total_paid": 60, "times_paid": 1, "is_absent": true, "last_payment_date": "02-05-2024", "absence_count": 1}, "Ian": {"total_paid": 60, "times_paid": 1, "is_absent": true, "last_payment_date": "02-05-2024", "absence_count": 1}, "Martin": {"total_paid": 0, "times_paid": 0, "is_absent": true, "last_payment_date": null, "absence_count": 1}, "Jesper": {"total_paid": 60, "times_paid": 1, "is_absent": false, "last_payment_date": "02-05-2024", "absence_count": 0}, "Frank": {"total_paid": 0, "times_paid": 0, "is_absent": true, "last_payment_date": null, "absence_count": 1}}, "history": [{"date": "02-05-2024", "member": "Brian", "amount": 60}, {"date": "02-05-2024", "member": "Ulrik", "amount": 60}, {"date": "02-05-2024", "member": "Dorthe", "amount": 60}, {"date": "02-05-2024", "member": "Eik", "amount": 60}, {"date": "02-05-2024", "member": "Ian", "amount": 60}, {"date": "02-05-2024", "member": "Jesper", "amount": 60}], "current_payer_index": 2}
+{
+    "members": {
+        "Brian": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Ulrik": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Dorthe": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Eik": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Ian": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Martin": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Jesper": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        },
+        "Frank": {
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": false,
+            "last_payment_date": null,
+            "absence_count": 0
+        }
+    },
+    "history": [],
+    "current_payer_index": 0
+}
