@@ -61,6 +61,11 @@ class CakeRotationApp:
         # Initialize the user interface components
         self.setup_ui()
 
+        # Load data and update UI
+        self.load_data()
+        #self.update_member_listbox()
+        #self.update_stats_tree()
+
         # Automatically select the next payer
         self.select_next_payer()
 
@@ -165,20 +170,28 @@ class CakeRotationApp:
 
 
     def load_data(self):
-        # Load member and history data from JSON file
-        if os.path.exists(self.data_file):
-            with open(self.data_file, 'r') as file:
-                data = json.load(file)
-                self.members = data.get('members', {})
-                self.history = data.get('history', {})
-                self.current_payer_index = data.get('current_payer_index', 0)
-        else:
-            self.save_data()  # Create the data file if it doesn't exist
-        self.update_member_listbox()
-        self.update_stats_tree()
+        """Load member and history data from the JSON file."""
+        try:
+            if os.path.exists(self.data_file):
+                with open(self.data_file, 'r') as file:
+                    data = json.load(file)
+                    self.members = data.get('members', {})
+                    self.history = data.get('history', [])
+                    self.current_payer_index = data.get('current_payer_index', 0)
+
+                self.update_member_listbox()
+                self.update_stats_tree()
+            else:
+                # If the file does not exist, create it with default data
+                self.save_data()
+        except json.JSONDecodeError as e:
+            messagebox.showerror("Error", "Failed to load data: " + str(e))
+            # Create default data if JSON is corrupted or unreadable
+            self.members = {}
+            self.save_data()
 
     def save_data(self):
-        # Save current data to JSON file
+        """Save the current members and history to the JSON file."""
         data = {
             'members': self.members,
             'history': self.history,
