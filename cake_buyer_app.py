@@ -103,11 +103,11 @@ class CakeRotationApp:
         self.pay_button = ttk.Button(self.frame, text=self.translate("Record Payment"), command=self.record_payment)
         self.pay_button.grid(row=3, column=1, pady=5)
         # Buttons for import and export actions
-        self.import_backup_button = ttk.Button(self.ui_frame, text="Import Backup", command=self.import_backup)
-        self.import_backup_button.grid(row=0, column=0, padx=10, pady=10)
+        # self.import_backup_button = ttk.Button(self.ui_frame, text="Import Backup", command=self.import_backup)
+        # self.import_backup_button.grid(row=0, column=0, padx=10, pady=10)
 
-        self.export_data_button = ttk.Button(self.ui_frame, text="Export Data", command=self.export_data)
-        self.export_data_button.grid(row=1, column=0, padx=10, pady=10)
+        # self.export_data_button = ttk.Button(self.ui_frame, text="Export Data", command=self.export_data)
+        # self.export_data_button.grid(row=1, column=0, padx=10, pady=10)
 
         # Treeview for showing statistics
         self.stats_tree = ttk.Treeview(self.frame, columns=('Member', 'Paid', 'Times', 'Last Payment', 'Absent', 'Absence Count'), show='headings', height=10)
@@ -122,19 +122,94 @@ class CakeRotationApp:
         self.settings_button.grid(row=5, column=0, columnspan=2, pady=5)
 
     def translate(self, text):
-        # Translate text to the current language
+        """Return the translated text based on the current language."""
         translations = {
             'en': {
-                # English translations here
+                "Cake Payment Manager": "Cake Payment Manager",
+                "Add/Edit Member": "Add/Edit Member",
+                "Toggle Absence": "Toggle Absence",
+                "Reset Statistics": "Reset Statistics",
+                "Record Payment": "Record Payment",
+                "Settings": "Settings",
+                "Member": "Member",
+                "Total Paid": "Total Paid",
+                "Times Paid": "Times Paid",
+                "Last Payment Date": "Last Payment Date",
+                "Absent": "Absent",
+                "Absence Count": "Absence Count",
+                "Reset Complete": "Reset Complete",
+                "All statistics have been reset.": "All statistics have been reset.",
+                "Are you sure you want to reset all statistics?": "Are you sure you want to reset all statistics?",
+                "Payment Amount": "Payment Amount",
+                "Enter the amount paid:": "Enter the amount paid:",
+                "Payment Recorded": "Payment Recorded",
+                "has paid": "has paid",
+                "No Payment": "No payment amount was entered.",
+                "Payment Error": "No valid payer is currently selected."
             },
             'de': {
-                # German translations here
+                "Cake Payment Manager": "Kuchen Zahlungsmanager",
+                "Add/Edit Member": "Mitglied hinzufügen/bearbeiten",
+                "Toggle Absence": "Abwesenheit umschalten",
+                "Reset Statistics": "Statistiken zurücksetzen",
+                "Record Payment": "Zahlung aufzeichnen",
+                "Settings": "Einstellungen",
+                "Member": "Mitglied",
+                "Total Paid": "Insgesamt bezahlt",
+                "Times Paid": "Anzahl der Zahlungen",
+                "Last Payment Date": "Letztes Zahlungsdatum",
+                "Absent": "Abwesend",
+                "Absence Count": "Abwesenheitszähler",
+                "Reset Complete": "Zurücksetzen abgeschlossen",
+                "All statistics have been reset.": "Alle Statistiken wurden zurückgesetzt.",
+                "Are you sure you want to reset all statistics?": "Sind Sie sicher, dass Sie alle Statistiken zurücksetzen möchten?",
+                "Payment Amount": "Zahlungsbetrag",
+                "Enter the amount paid:": "Geben Sie den gezahlten Betrag ein:",
+                "Payment Recorded": "Zahlung aufgezeichnet",
+                "has paid": "hat bezahlt",
+                "No Payment": "Kein Zahlungsbetrag eingegeben.",
+                "Payment Error": "Kein gültiger Zahler ausgewählt."
             },
             'da': {
-                # Danish translations here
+                "Cake Payment Manager": "Kage Betalingsmanager",
+                "Add/Edit Member": "Tilføj/Rediger Medlem",
+                "Toggle Absence": "Skift Fravær",
+                "Reset Statistics": "Nulstil Statistikker",
+                "Record Payment": "Registrer Betaling",
+                "Settings": "Indstillinger",
+                "Member": "Medlem",
+                "Total Paid": "Samlet Betalt",
+                "Times Paid": "Antal Gange Betalt",
+                "Last Payment Date": "Seneste Betalingsdato",
+                "Absent": "Fraværende",
+                "Absence Count": "Fraværstæller",
+                "Reset Complete": "Nulstilling Fuldført",
+                "All statistics have been reset.": "Alle statistikker er nulstillet.",
+                "Are you sure you want to reset all statistics?": "Er du sikker på, at du vil nulstille alle statistikker?",
+                "Payment Amount": "Betalingsbeløb",
+                "Enter the amount paid:": "Indtast det betalte beløb:",
+                "Payment Recorded": "Betaling Registreret",
+                "has paid": "har betalt",
+                "No Payment": "Ingen betalingsbeløb indtastet.",
+                "Payment Error": "Ingen gyldig betaler er valgt."
             }
         }
-        return translations.get(self.current_language, {}).get(text, text)
+        return translations[self.current_language].get(text, text)
+
+    def translate_text(self):
+        """Updates the text of all UI components based on the current language."""
+        self.reset_button.config(text=self.translate("Reset Statistics"))
+        self.pay_button.config(text=self.translate("Record Payment"))
+        self.add_edit_button.config(text=self.translate("Add/Edit Member"))
+        self.absent_button.config(text=self.translate("Toggle Absence"))
+        self.import_backup_button.config(text=self.translate("Import Backup"))
+        self.export_data_button.config(text=self.translate("Export Data"))
+        self.settings_button.config(text=self.translate("Settings"))
+        # Update other UI elements as necessary
+
+        # Update headings in Treeview
+        for col in ['Member', 'Paid', 'Times', 'Last Payment', 'Absent', 'Absence Count']:
+            self.stats_tree.heading(col, text=self.translate(col))
     
     def import_backup(self):
         # Ask the user to select a backup JSON file to import
@@ -167,7 +242,6 @@ class CakeRotationApp:
                     messagebox.showerror("Import Error", "Invalid backup file format.")
             else:
                 messagebox.showerror("File Error", "The selected file does not exist.")
-
 
     def load_data(self):
         """Load member and history data from the JSON file."""
@@ -234,25 +308,44 @@ class CakeRotationApp:
         if selected:
             member_index = selected[0]
             member = list(self.members.keys())[member_index]
-            self.members[member]['is_absent'] = not self.members[member].get('is_absent', False)
-            
+            member_data = self.members[member]
+
+            # Toggle the absence status
+            member_data['is_absent'] = not member_data['is_absent']
+
+            # Update the absence count
+            if member_data['is_absent']:
+                member_data['absence_count'] += 1
+            else:
+                member_data['absence_count'] = max(0, member_data['absence_count'] - 1)
+
             self.save_data()
             self.update_member_listbox()
 
-            # If the current payer is marked absent, or if any change in absence might affect the payer sequence
-            if member_index == self.current_payer_index or self.members[member]['is_absent']:
+            # If the current payer is marked absent, automatically select the next non-absent member
+            if member_index == self.current_payer_index and member_data['is_absent']:
                 self.select_next_payer()
 
+            self.update_stats_tree()
+
     def reset_statistics(self):
-        # Reset all statistical data after confirmation
+        """Reset all statistical data after confirmation."""
         if messagebox.askyesno(self.translate("Reset Statistics"), self.translate("Are you sure you want to reset all statistics?")):
             backup_file = f"team_data_backup_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.json"
-            shutil.copy(self.data_file, backup_file)
-            for member in self.members:
-                self.members[member] = {'total_paid': 0, 'times_paid': 0, 'is_absent': False, 'last_payment_date': None, 'absence_count': 0}
-            self.history.clear()
-            self.save_data()
-            self.update_stats_tree()
+            shutil.copy(self.data_file, backup_file)  # Backup the current data before resetting
+
+            for member in self.members.values():
+                member['total_paid'] = 0
+                member['times_paid'] = 0
+                member['last_payment_date'] = None
+                member['absence_count'] = 0
+
+            self.history.clear()  # Clear the payment history
+            self.save_data()  # Save the reset data to file
+
+            self.update_member_listbox()  # Refresh the member list to show reset values
+            self.update_stats_tree()  # Refresh the stats tree to reflect the reset statistics
+
             messagebox.showinfo(self.translate("Reset Complete"), self.translate("All statistics have been reset."))
 
     def record_payment(self):
@@ -284,30 +377,52 @@ class CakeRotationApp:
             messagebox.showerror("Payment Error", "No valid payer is currently selected.")
 
     def update_stats_tree(self):
-        # Update the statistics treeview with current data
-        for i in self.stats_tree.get_children():
-            self.stats_tree.delete(i)
+        self.stats_tree.delete(*self.stats_tree.get_children())
         for member, details in self.members.items():
-            status = self.translate("Absent") if details.get('is_absent', False) else self.translate("Present")
-            last_payment_date = details['last_payment_date'] if details['last_payment_date'] else self.translate("Never")
-            self.stats_tree.insert('', 'end', values=(member, details['total_paid'], details['times_paid'], last_payment_date, status, details['absence_count']))
+            self.stats_tree.insert('', 'end', values=(
+                member,
+                details['total_paid'],
+                details['times_paid'],
+                details['last_payment_date'] if details['last_payment_date'] else "Never",
+                "Absent" if details['is_absent'] else "Present",
+                details['absence_count']
+            ))
 
     def select_next_payer(self):
-        # Find the first non-absent member following the current payer
-        start_index = (self.current_payer_index + 1) % len(self.members) if self.members else 0
-        for i in range(len(self.members)):
-            index = (start_index + i) % len(self.members)
-            if not self.members[list(self.members.keys())[index]]['is_absent']:
-                self.current_payer_index = index
-                break
-        else:
-            # Handle the case where all members are absent
-            self.current_payer_index = None
-            messagebox.showinfo("All Absent", "All members are currently marked as absent.")
+        """Select the next payer, incrementing absence counts if skipping over absent members."""
+        if not self.members:
+            messagebox.showinfo("No Members", "There are no members in the list.")
             return
 
+        start_index = (self.current_payer_index + 1) % len(self.members)
+        checked_members = 0  # Keep track of how many members we've checked
+
+        while checked_members < len(self.members):
+            current_index = (start_index + checked_members) % len(self.members)
+            member_key = list(self.members.keys())[current_index]
+            #print(f"Before incrementing: {member_data['absence_count']}")
+            member_data = self.members[member_key]
+            #print(f"After incrementing: {member_data['absence_count']}")
+
+            if not member_data['is_absent']:
+                if self.current_payer_index != current_index:
+                    # Set the new payer
+                    self.current_payer_index = current_index
+                    break
+            else:
+                # Increment absence count only if we are moving past this member
+                member_data['absence_count'] += 1
+
+            checked_members += 1
+
+        if checked_members >= len(self.members):
+            # If all members are absent or we've checked all members
+            messagebox.showinfo("All Absent", "All members are currently marked as absent.")
+            self.current_payer_index = None  # Reset the payer index
+
         self.update_member_listbox()
-        self.highlight_current_payer()
+        self.update_stats_tree()
+        self.save_data()  # Save the updated data including any absence count changes
 
     def highlight_current_payer(self):
         # Clear previous selections and highlight the current payer

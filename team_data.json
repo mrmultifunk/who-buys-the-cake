@@ -8,17 +8,17 @@
             "absence_count": 0
         },
         "Ulrik": {
-            "total_paid": 60,
-            "times_paid": 1,
+            "total_paid": 0,
+            "times_paid": 0,
             "is_absent": false,
-            "last_payment_date": "03-05-2024",
+            "last_payment_date": null,
             "absence_count": 0
         },
         "Dorthe": {
-            "total_paid": 60,
-            "times_paid": 1,
+            "total_paid": 0,
+            "times_paid": 0,
             "is_absent": false,
-            "last_payment_date": "03-05-2024",
+            "last_payment_date": null,
             "absence_count": 0
         },
         "Eik": {
@@ -29,24 +29,24 @@
             "absence_count": 0
         },
         "Ian": {
-            "total_paid": 0,
-            "times_paid": 0,
+            "total_paid": 60,
+            "times_paid": 1,
             "is_absent": false,
-            "last_payment_date": null,
+            "last_payment_date": "03-05-2024",
             "absence_count": 0
         },
         "Martin": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 1
         },
         "Jesper": {
-            "total_paid": 0,
-            "times_paid": 0,
+            "total_paid": 60,
+            "times_paid": 1,
             "is_absent": false,
-            "last_payment_date": null,
+            "last_payment_date": "03-05-2024",
             "absence_count": 0
         },
         "Frank": {
@@ -60,19 +60,19 @@
     "history": [
         {
             "date": "03-05-2024",
+            "member": "Ian",
+            "amount": 60
+        },
+        {
+            "date": "03-05-2024",
+            "member": "Jesper",
+            "amount": 60
+        },
+        {
+            "date": "03-05-2024",
             "member": "Frank",
-            "amount": 60
-        },
-        {
-            "date": "03-05-2024",
-            "member": "Ulrik",
-            "amount": 60
-        },
-        {
-            "date": "03-05-2024",
-            "member": "Dorthe",
             "amount": 60
         }
     ],
-    "current_payer_index": 2
+    "current_payer_index": 3
 }
