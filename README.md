@@ -1,3 +1,5 @@
+### Who buys the cake
+
 #### Overview
 The Cake Buyer App is a simple GUI application developed in Python using Tkinter. It helps a group of friends determine who should buy the cake next, ensuring everyone pays approximately the same amount over time.
 
@@ -45,6 +47,27 @@ With the virtual environment activated and dependencies installed, you can run t
 ```bash
 python cake_buyer_app.py
 ```
+
+#### Building an Executable
+To distribute your application as an executable:
+
+1. **Install PyInstaller:**
+   ```bash
+   pip install pyinstaller
+   ```
+
+2. **Create an Executable:**
+   Navigate to your project directory and run PyInstaller with your script:
+
+   ```bash
+   pyinstaller --onefile --windowed --icon=images\wbtc.ico cake_buyer_app.py
+   ```
+
+   - `--onefile`: Creates a single executable file.
+   - `--windowed`: Prevents a command-line window from showing up in GUI applications.
+   - `--icon`: Sets the icon for the executable.
+
+   After running the command, find your `.exe` in the `dist` directory.
 
 #### Exiting the Application
 To stop the application, simply close the application window. To deactivate the virtual environment and return to your global Python environment, use the following command:
