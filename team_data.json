@@ -40,7 +40,7 @@
             "times_paid": 0,
             "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 1
+            "absence_count": 2
         },
         "Jesper": {
             "total_paid": 60,

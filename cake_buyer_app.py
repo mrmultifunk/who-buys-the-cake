@@ -121,8 +121,8 @@ class CakeRotationApp:
         self.settings_button = ttk.Button(self.frame, text=self.translate("Settings"), command=self.open_settings)
         self.settings_button.grid(row=5, column=0, columnspan=2, pady=5)
 
-    def translate(self, text):
-        """Return the translated text based on the current language."""
+    def translate(self, text_key):
+        """Retrieve the translated text based on the current language setting."""
         translations = {
             'en': {
                 "Cake Payment Manager": "Cake Payment Manager",
@@ -136,6 +136,7 @@ class CakeRotationApp:
                 "Times Paid": "Times Paid",
                 "Last Payment Date": "Last Payment Date",
                 "Absent": "Absent",
+                "Present": "Present",
                 "Absence Count": "Absence Count",
                 "Reset Complete": "Reset Complete",
                 "All statistics have been reset.": "All statistics have been reset.",
@@ -152,37 +153,39 @@ class CakeRotationApp:
                 "Add/Edit Member": "Mitglied hinzufügen/bearbeiten",
                 "Toggle Absence": "Abwesenheit umschalten",
                 "Reset Statistics": "Statistiken zurücksetzen",
-                "Record Payment": "Zahlung aufzeichnen",
+                "Record Payment": "Zahlung erfassen",
                 "Settings": "Einstellungen",
                 "Member": "Mitglied",
-                "Total Paid": "Insgesamt bezahlt",
+                "Total Paid": "Gesamt bezahlt",
                 "Times Paid": "Anzahl der Zahlungen",
                 "Last Payment Date": "Letztes Zahlungsdatum",
                 "Absent": "Abwesend",
-                "Absence Count": "Abwesenheitszähler",
+                "Present": "Anwesend",
+                "Absence Count": "Anzahl der Abwesenheiten",
                 "Reset Complete": "Zurücksetzen abgeschlossen",
                 "All statistics have been reset.": "Alle Statistiken wurden zurückgesetzt.",
                 "Are you sure you want to reset all statistics?": "Sind Sie sicher, dass Sie alle Statistiken zurücksetzen möchten?",
                 "Payment Amount": "Zahlungsbetrag",
-                "Enter the amount paid:": "Geben Sie den gezahlten Betrag ein:",
-                "Payment Recorded": "Zahlung aufgezeichnet",
+                "Enter the amount paid:": "Geben Sie den bezahlten Betrag ein:",
+                "Payment Recorded": "Zahlung registriert",
                 "has paid": "hat bezahlt",
-                "No Payment": "Kein Zahlungsbetrag eingegeben.",
+                "No Payment": "Kein Betrag eingegeben.",
                 "Payment Error": "Kein gültiger Zahler ausgewählt."
             },
             'da': {
                 "Cake Payment Manager": "Kage Betalingsmanager",
                 "Add/Edit Member": "Tilføj/Rediger Medlem",
                 "Toggle Absence": "Skift Fravær",
-                "Reset Statistics": "Nulstil Statistikker",
+                "Reset Statistics": "Nulstil Statistik",
                 "Record Payment": "Registrer Betaling",
                 "Settings": "Indstillinger",
                 "Member": "Medlem",
                 "Total Paid": "Samlet Betalt",
-                "Times Paid": "Antal Gange Betalt",
+                "Times Paid": "Antal Betalinger",
                 "Last Payment Date": "Seneste Betalingsdato",
                 "Absent": "Fraværende",
-                "Absence Count": "Fraværstæller",
+                "Present": "Tilstede",
+                "Absence Count": "Fraværstælling",
                 "Reset Complete": "Nulstilling Fuldført",
                 "All statistics have been reset.": "Alle statistikker er nulstillet.",
                 "Are you sure you want to reset all statistics?": "Er du sikker på, at du vil nulstille alle statistikker?",
@@ -190,11 +193,11 @@ class CakeRotationApp:
                 "Enter the amount paid:": "Indtast det betalte beløb:",
                 "Payment Recorded": "Betaling Registreret",
                 "has paid": "har betalt",
-                "No Payment": "Ingen betalingsbeløb indtastet.",
-                "Payment Error": "Ingen gyldig betaler er valgt."
+                "No Payment": "Ingen betaling indtastet.",
+                "Payment Error": "Ingen gyldig betaler valgt."
             }
         }
-        return translations[self.current_language].get(text, text)
+        return translations[self.current_language].get(text_key, text_key)
 
     def translate_text(self):
         """Updates the text of all UI components based on the current language."""
