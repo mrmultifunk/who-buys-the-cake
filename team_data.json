@@ -36,10 +36,10 @@
             "absence_count": 0
         },
         "Martin": {
-            "total_paid": 0,
-            "times_paid": 0,
+            "total_paid": 50,
+            "times_paid": 1,
             "is_absent": false,
-            "last_payment_date": null,
+            "last_payment_date": "15-05-2024",
             "absence_count": 0
         },
         "Jesper": {
@@ -62,7 +62,12 @@
             "date": "08-05-2024",
             "member": "Dorthe",
             "amount": 50
+        },
+        {
+            "date": "15-05-2024",
+            "member": "Martin",
+            "amount": 50
         }
     ],
-    "current_payer_index": 4
+    "current_payer_index": 6
 }
