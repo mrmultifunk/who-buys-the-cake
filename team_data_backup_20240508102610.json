@@ -3,66 +3,60 @@
         "Brian": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         },
         "Ulrik": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         },
         "Dorthe": {
-            "total_paid": 50,
-            "times_paid": 1,
-            "is_absent": false,
-            "last_payment_date": "08-05-2024",
-            "absence_count": 0
+            "total_paid": 0,
+            "times_paid": 0,
+            "is_absent": true,
+            "last_payment_date": null,
+            "absence_count": 2
         },
         "Eik": {
             "total_paid": 0,
             "times_paid": 0,
             "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 1
+            "absence_count": 2
         },
         "Ian": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         },
         "Martin": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         },
         "Jesper": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         },
         "Frank": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": false,
+            "is_absent": true,
             "last_payment_date": null,
-            "absence_count": 0
+            "absence_count": 2
         }
     },
-    "history": [
-        {
-            "date": "08-05-2024",
-            "member": "Dorthe",
-            "amount": 50
-        }
-    ],
-    "current_payer_index": 4
+    "history": [],
+    "current_payer_index": null
 }
