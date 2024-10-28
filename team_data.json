@@ -1,10 +1,10 @@
 {
     "members": {
         "Brian": {
-            "total_paid": 0,
-            "times_paid": 0,
+            "total_paid": 100,
+            "times_paid": 2,
             "is_absent": false,
-            "last_payment_date": null,
+            "last_payment_date": "28-10-2024",
             "absence_count": 0
         },
         "Ulrik": {
@@ -24,7 +24,7 @@
         "Eik": {
             "total_paid": 0,
             "times_paid": 0,
-            "is_absent": true,
+            "is_absent": false,
             "last_payment_date": null,
             "absence_count": 0
         },
@@ -57,6 +57,16 @@
             "absence_count": 0
         }
     },
-    "history": [],
-    "current_payer_index": 0
+    "history": [
+        {
+            "date": "28-10-2024",
+            "member": "Brian",
+            "amount": 50
+        },
+        {
+            "date": "28-10-2024",
+            "member": "Brian",
+            "amount": 50
+        }
+    ]
 }
